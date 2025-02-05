@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post } from '@nestjs/common';
+import { Body, Controller, Param, Post, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { Get, Put, Delete } from '@nestjs/common';
@@ -6,6 +6,7 @@ import { UpdateUserDto } from './dtos/update-user.dto';
 import { Roles } from 'src/auth/decorator/roles.decorator';
 import { Role } from '@prisma/client';
 import { UpdateRoleDto } from './dtos/update-role.dto';
+import { UserOwnershipGuard } from 'src/auth/guards/user-ownership.guard';
 
 @Controller('users')
 export class UsersController {
@@ -21,12 +22,14 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  @UseGuards(UserOwnershipGuard)
   @Get(':username')
   async findOne(@Param('username') username: string) {
     return this.usersService.findOneByUsername(username);
   }
 
   @Delete(':username')
+  @Roles(Role.ADMIN)
   async remove(@Param('username') username: string) {
     return this.usersService.removeUser(username);
   }
@@ -37,6 +40,7 @@ export class UsersController {
     return this.usersService.updateUserRole(updateRoleDto);
   }
 
+  @UseGuards(UserOwnershipGuard)
   @Put(':username')
   async update(
     @Param('username') username: string,
