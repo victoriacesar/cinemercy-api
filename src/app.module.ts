@@ -6,6 +6,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtGuard } from './auth/guards/jwt.guard';
 import { JwtStrategy } from './auth/strategy/jwt.strategy';
 import { RolesGuard } from './auth/guards/roles.guard';
+import { MoviesModule } from './movies/movies.module';
 
 const ENV = process.env.NODE_ENV;
 
@@ -16,6 +17,7 @@ const ENV = process.env.NODE_ENV;
     }),
     UsersModule,
     AuthModule,
+    MoviesModule,
   ],
   controllers: [],
   providers: [
