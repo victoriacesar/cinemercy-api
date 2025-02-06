@@ -1,5 +1,5 @@
 import { Users as UsersModel } from './users.model';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { UsersRepository } from './users.repository';
 import { Users } from '@prisma/client';
 import { UpdateRoleDto } from './dtos/update-role.dto';
@@ -17,13 +17,35 @@ export class UsersService {
   }
 
   async findOneByUsername(username: string): Promise<Users | null> {
-    return this.usersRepository.findOneByUsername(username);
+    const user = await this.usersRepository.findOneByUsername(username);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user;
+  }
+
+  async findOneById(id: number): Promise<Users | null> {
+    const user = await this.usersRepository.findOneById(id);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user;
   }
 
   async updateUser(
     username: string,
     updateUserDto: Partial<Users>,
   ): Promise<Users> {
+    const user = await this.findOneByUsername(username);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
     return this.usersRepository.update(username, updateUserDto);
   }
 

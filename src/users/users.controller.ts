@@ -22,14 +22,13 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @UseGuards(UserOwnershipGuard)
   @Get(':username')
   async findOne(@Param('username') username: string) {
     return this.usersService.findOneByUsername(username);
   }
 
   @Delete(':username')
-  @Roles(Role.ADMIN)
+  @UseGuards(UserOwnershipGuard)
   async remove(@Param('username') username: string) {
     return this.usersService.removeUser(username);
   }

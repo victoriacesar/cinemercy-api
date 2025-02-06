@@ -16,7 +16,15 @@ export class UsersRepository {
   }
 
   async findOneByUsername(username: string) {
-    return this.prismaService.users.findUnique({ where: { username } });
+    return this.prismaService.users.findUnique({
+      where: { username },
+    });
+  }
+
+  async findOneById(id: number) {
+    return this.prismaService.users.findUnique({
+      where: { id },
+    });
   }
 
   async update(username: string, updateUserDto: Partial<Users>) {
