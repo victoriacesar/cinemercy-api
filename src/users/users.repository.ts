@@ -8,7 +8,12 @@ export class UsersRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
   async create(data: Users) {
-    return this.prismaService.users.create({ data });
+    return this.prismaService.users.create({
+      data,
+      omit: {
+        password: true,
+      },
+    });
   }
 
   async findAll() {

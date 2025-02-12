@@ -7,6 +7,7 @@ import { JwtGuard } from './auth/guards/jwt.guard';
 import { JwtStrategy } from './auth/strategy/jwt.strategy';
 import { RolesGuard } from './auth/guards/roles.guard';
 import { MoviesModule } from './movies/movies.module';
+import { RefreshJwtStrategy } from './auth/strategy/refresh.strategy';
 
 const ENV = process.env.NODE_ENV;
 
@@ -14,6 +15,7 @@ const ENV = process.env.NODE_ENV;
   imports: [
     ConfigModule.forRoot({
       envFilePath: !ENV ? '.env' : `.env.${ENV}`,
+      isGlobal: true,
     }),
     UsersModule,
     AuthModule,
@@ -30,6 +32,7 @@ const ENV = process.env.NODE_ENV;
       useClass: RolesGuard,
     },
     JwtStrategy,
+    RefreshJwtStrategy,
   ],
 })
 export class AppModule {}

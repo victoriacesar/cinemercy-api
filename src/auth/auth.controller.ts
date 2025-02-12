@@ -13,6 +13,7 @@ import { Users } from '@prisma/client';
 import { RegisterRequestDto } from './dto/register-request.dto';
 import { RegisterResponseDTO } from './dto/register-response.dto';
 import { Public } from './decorator/public.decorator';
+import { RefreshAuthGuard } from './guards/refresh-auth.guard';
 
 @Public()
 @Controller('auth')
@@ -35,5 +36,11 @@ export class AuthController {
     @Body() registerBody: RegisterRequestDto,
   ): Promise<RegisterResponseDTO | BadRequestException> {
     return this.authService.register(registerBody);
+  }
+
+  @UseGuards(RefreshAuthGuard)
+  @Post('refresh')
+  async refreshToken(@Request() req) {
+    return await this.authService.refreshToken(req.user);
   }
 }

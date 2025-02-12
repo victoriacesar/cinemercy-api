@@ -8,7 +8,7 @@ import { UpdateRoleDto } from './dtos/update-role.dto';
 export class UsersService {
   constructor(private readonly usersRepository: UsersRepository) {}
 
-  async createUser(data: UsersModel): Promise<Users> {
+  async createUser(data: UsersModel): Promise<Partial<Users>> {
     return this.usersRepository.create(data);
   }
 

@@ -1,3 +1,5 @@
 export type AccessToken = {
-  access_token: string;
+  id?: number;
+  token: string;
+  refreshToken: string;
 };
